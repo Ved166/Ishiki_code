@@ -21,25 +21,17 @@ ISHIKI is a cybersecurity training web application that educates users about phi
 
 - Python 3.10+
 - Flask, SQLAlchemy, Flask-Login, Flask-Bcrypt
-- **SQLite** (default) or **MySQL** via `DATABASE_URL`
+- **SQLite**
 - Bootstrap 5, Chart.js, JavaScript
 
 ## Database
 
 ISHIKI uses a **relational database** accessed through **SQLAlchemy** (Python ORM).
 
-| Mode | Engine | File / Connection |
-|------|--------|-------------------|
-| **Default (development)** | **SQLite 3** | `ishiki.db` in the project folder (created automatically on first run) |
-| **Optional (production)** | **MySQL** | Set `DATABASE_URL` (see below) |
 
 SQLite stores everything in a single local file — no separate database server to install. Tables include `users`, `modules`, `quizzes`, `questions`, `results`, `reports`, `badges`, `user_badges`, `module_progress`, `analysis_history`, `activities`, and `simulation_attempts`.
 
-To switch to MySQL, install `pymysql` and set:
 
-```bash
-set DATABASE_URL=mysql+pymysql://user:password@localhost/ishiki
-```
 
 ## Quick Start
 
