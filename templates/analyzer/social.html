@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Social Engineering Detector{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-person-exclamation"></i> Social Engineering Detector</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <form method="post">
+            <textarea name="text" class="form-control" rows="10" placeholder="Paste suspicious message text...">{{ text }}</textarea>
+            <button type="submit" class="btn btn-info mt-3">Analyze Tactics</button>
+        </form>
+    </div>
+    <div class="col-lg-6">
+        {% if result %}
+        <div class="card bg-dark border-secondary">
+            <div class="card-header">Threat Level: 
+                <span class="badge {% if result.threat_level == 'High' %}bg-danger{% elif result.threat_level in ['Medium','Moderate'] %}bg-warning{% else %}bg-success{% endif %}">
+                    {{ result.threat_level }}
+                </span>
+            </div>
+            <div class="card-body">
+                <h6>Detected Tactics:</h6>
+                {% if result.detected_tactics %}
+                <ul class="list-unstyled">
+                    {% for t in result.detected_tactics %}
+                    <li><i class="bi bi-check-circle-fill text-danger"></i> {{ t }}
+                        <small class="text-muted d-block">Keywords: {{ result.details[t]|join(', ') }}</small>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-success">No manipulation tactics detected.</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

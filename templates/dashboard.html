@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-speedometer2"></i> Dashboard</h2>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card card bg-dark border-info">
+            <div class="card-body text-center">
+                <div class="display-6 text-info">{{ current_user.xp or 0 }}</div>
+                <div class="text-muted">Total XP</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card card bg-dark border-success">
+            <div class="card-body text-center">
+                <div class="display-6 text-success">{{ completed }}/{{ total_modules }}</div>
+                <div class="text-muted">Modules Done</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card card bg-dark border-warning">
+            <div class="card-body text-center">
+                <div class="display-6 text-warning">{{ current_user.learning_streak or 0 }}</div>
+                <div class="text-muted">Day Streak</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card card bg-dark border-secondary">
+            <div class="card-body text-center">
+                <div class="display-6">{{ badges|length }}</div>
+                <div class="text-muted">Badges</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-header">Quiz Performance</div>
+            <div class="card-body"><canvas id="quizChart" height="200"></canvas></div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-header">Risk Analysis History</div>
+            <div class="card-body"><canvas id="riskChart" height="200"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-lg-4">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-header">Earned Badges</div>
+            <ul class="list-group list-group-flush">
+                {% for ub in badges %}
+                <li class="list-group-item bg-dark text-light">
+                    <i class="bi bi-award text-warning"></i> {{ ub.badge.badge_name }}
+                    <small class="d-block text-muted">{{ ub.badge.description }}</small>
+                </li>
+                {% else %}
+                <li class="list-group-item bg-dark text-muted">Complete activities to earn badges.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-header">Recent Analyses</div>
+            <ul class="list-group list-group-flush">
+                {% for a in analyses %}
+                <li class="list-group-item bg-dark text-light small">
+                    <span class="badge bg-secondary">{{ a.analysis_type }}</span>
+                    {{ a.classification }} ({{ a.risk_score }})
+                    <small class="d-block text-muted">{{ a.input_preview[:50] }}...</small>
+                </li>
+                {% else %}
+                <li class="list-group-item bg-dark text-muted">No analyses yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-header">Recent Activity</div>
+            <ul class="list-group list-group-flush">
+                {% for act in activities %}
+                <li class="list-group-item bg-dark text-light small">
+                    {{ act.action }}{% if act.details %} — {{ act.details }}{% endif %}
+                </li>
+                {% else %}
+                <li class="list-group-item bg-dark text-muted">No activity yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const quizLabels = {{ quiz_labels|safe }};
+const quizScores = {{ quiz_scores|safe }};
+const riskLabels = {{ risk_labels|safe }};
+const riskCounts = {{ risk_counts|safe }};
+
+if (quizLabels.length) {
+    new Chart(document.getElementById('quizChart'), {
+        type: 'bar',
+        data: { labels: quizLabels, datasets: [{ label: 'Score %', data: quizScores, backgroundColor: '#0dcaf0' }] },
+        options: { plugins: { legend: { display: false } }, scales: { y: { max: 100, beginAtZero: true } } }
+    });
+}
+new Chart(document.getElementById('riskChart'), {
+    type: 'doughnut',
+    data: {
+        labels: riskLabels,
+        datasets: [{ data: riskCounts, backgroundColor: ['#198754', '#ffc107', '#dc3545'] }]
+    }
+});
+</script>
+{% endblock %}

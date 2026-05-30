@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+venv/
+.venv/
+env/
+
+# Database (created on first run)
+*.db
+phishguard.db
+
+# Uploads & secrets
+uploads/
+.env
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h2 class="mb-4 text-warning"><i class="bi bi-gear"></i> Admin Panel</h2>
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="card bg-dark border-info"><div class="card-body text-center"><div class="h3">{{ total_users }}</div><small>Users</small></div></div></div>
+    <div class="col-md-3"><div class="card bg-dark border-warning"><div class="card-body text-center"><div class="h3">{{ pending_reports }}</div><small>Pending Reports</small></div></div></div>
+    <div class="col-md-3"><div class="card bg-dark border-success"><div class="card-body text-center"><div class="h3">{{ avg_score }}%</div><small>Avg Quiz Score</small></div></div></div>
+    <div class="col-md-3"><div class="card bg-dark border-danger"><div class="card-body text-center"><div class="h3">{{ total_reports }}</div><small>Total Reports</small></div></div></div>
+</div>
+<div class="mb-3">
+    <a href="{{ url_for('admin.users') }}" class="btn btn-outline-info btn-sm">Users</a>
+    <a href="{{ url_for('admin.modules') }}" class="btn btn-outline-info btn-sm">Modules</a>
+    <a href="{{ url_for('admin.quizzes') }}" class="btn btn-outline-info btn-sm">Quizzes</a>
+    <a href="{{ url_for('admin.reports') }}" class="btn btn-outline-info btn-sm">Reports</a>
+</div>
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card bg-dark border-secondary">
+            <div class="card-header">Phishing Indicators (Analyses)</div>
+            <ul class="list-group list-group-flush">
+                {% for k, v in indicator_counts.items() %}
+                <li class="list-group-item bg-dark d-flex justify-content-between"><span>{{ k }}</span><span class="badge bg-secondary">{{ v }}</span></li>
+                {% else %}
+                <li class="list-group-item bg-dark text-muted">No data yet</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card bg-dark border-secondary">
+            <div class="card-header">Recent Analyses</div>
+            <ul class="list-group list-group-flush">
+                {% for a in recent_activity %}
+                <li class="list-group-item bg-dark small">{{ a.analysis_type }} — {{ a.classification }} ({{ a.risk_score }})</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

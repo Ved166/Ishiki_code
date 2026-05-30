@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ module.title }}{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('learning.modules_list') }}">Modules</a></li>
+        <li class="breadcrumb-item active">{{ module.title }}</li>
+    </ol>
+</nav>
+<div class="card bg-dark border-secondary">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">{{ module.title }}</h4>
+        {% if progress and progress.completed %}
+        <span class="badge bg-success">Completed</span>
+        {% endif %}
+    </div>
+    <div class="card-body module-content">
+        {{ module.content|safe }}
+    </div>
+    <div class="card-footer">
+        {% if not progress or not progress.completed %}
+        <form method="post" action="{{ url_for('learning.complete_module', module_id=module.id) }}">
+            <button type="submit" class="btn btn-success">Mark as Complete (+50 XP)</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

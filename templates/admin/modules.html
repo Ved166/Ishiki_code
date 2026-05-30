@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Modules{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h2>Learning Modules</h2>
+    <a href="{{ url_for('admin.add_module') }}" class="btn btn-info btn-sm">Add Module</a>
+</div>
+<table class="table table-dark table-striped">
+    <thead><tr><th>Order</th><th>Title</th><th></th></tr></thead>
+    <tbody>
+        {% for m in modules %}
+        <tr>
+            <td>{{ m.order_index }}</td><td>{{ m.title }}</td>
+            <td>
+                <a href="{{ url_for('admin.edit_module', module_id=m.id) }}" class="btn btn-sm btn-outline-warning">Edit</a>
+                <form method="post" action="{{ url_for('admin.delete_module', module_id=m.id) }}" class="d-inline" onsubmit="return confirm('Delete?')">
+                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

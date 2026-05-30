@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}URL Analyzer{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-link-45deg"></i> URL Analyzer</h2>
+<div class="row">
+    <div class="col-lg-5">
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Enter URL</label>
+                <input type="text" name="url" class="form-control" value="{{ url_input }}" placeholder="https://example.com/login">
+            </div>
+            <button type="submit" class="btn btn-warning">Analyze URL</button>
+        </form>
+    </div>
+    <div class="col-lg-7">
+        {% if result %}
+        {% set badge = 'success' if result.classification == 'Safe' else ('warning' if result.classification == 'Suspicious' else 'danger') %}
+        <div class="card border-{{ badge }} bg-dark">
+            <div class="card-header">
+                Score: <strong>{{ result.risk_score }}/100</strong>
+                <span class="badge bg-{{ badge }} float-end">{{ result.classification }}</span>
+            </div>
+            <div class="card-body">
+                {% for rule in result.all_rules %}
+                <div class="mb-2 p-2 rounded {% if rule.triggered %}bg-danger bg-opacity-10 border border-danger{% else %}bg-success bg-opacity-10{% endif %}">
+                    <strong>{{ rule.rule_name }}</strong>
+                    {% if rule.triggered %}<span class="badge bg-danger float-end">+{{ rule.score }}</span>{% endif %}
+                    <p class="mb-0 small">{{ rule.explanation }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

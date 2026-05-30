@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Quizzes{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-patch-question"></i> Quizzes</h2>
+<div class="row g-3">
+    {% for quiz in quizzes %}
+  <div class="col-md-6">
+        <div class="card bg-dark border-secondary">
+            <div class="card-body">
+                <h5>{{ quiz.title }}</h5>
+                {% if quiz.module %}<p class="small text-muted">Module: {{ quiz.module.title }}</p>{% endif %}
+                {% if past.get(quiz.id) %}
+                <span class="badge bg-success">Best: {{ past[quiz.id].score }}/{{ past[quiz.id].total }}</span>
+                {% endif %}
+            </div>
+            <div class="card-footer bg-transparent">
+                <a href="{{ url_for('quiz.take_quiz', quiz_id=quiz.id) }}" class="btn btn-sm btn-info">Take Quiz</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p class="text-muted">No quizzes available.</p>
+    {% endfor %}
+</div>
+{% endblock %}

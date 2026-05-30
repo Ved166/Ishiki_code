@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Report Incident{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-flag"></i> Report Suspicious Activity</h2>
+<form method="post" class="col-lg-8">
+    <div class="mb-3">
+        <label class="form-label">Report Type</label>
+        <select name="report_type" class="form-select" required>
+            <option value="">Select...</option>
+            <option value="suspicious_email">Suspicious Email</option>
+            <option value="fake_website">Fake Website</option>
+            <option value="scam_message">Scam Message</option>
+            <option value="other">Other</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea name="description" class="form-control" rows="6" minlength="20" required placeholder="Describe what you observed..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-danger">Submit Report</button>
+    <a href="{{ url_for('reports.my_reports') }}" class="btn btn-outline-secondary">My Reports</a>
+</form>
+{% endblock %}

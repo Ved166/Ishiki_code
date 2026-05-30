@@ -1,0 +1,43 @@
+{% if result %}
+<div class="analysis-result mt-4">
+    {% set cls = result.classification %}
+    {% set badge = 'success' if cls == 'Safe' else ('warning' if cls == 'Suspicious' else 'danger') %}
+    <div class="card border-{{ badge }} bg-dark">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Risk Score: <strong class="text-{{ badge }}">{{ result.risk_score }}/100</strong></span>
+            <span class="badge bg-{{ badge }} fs-6">{{ result.classification }}</span>
+        </div>
+        <div class="card-body">
+            <h6>Triggered Rules ({{ result.triggered_rules|length }})</h6>
+            {% if result.triggered_rules %}
+            <div class="list-group list-group-flush mb-3">
+                {% for rule in result.triggered_rules %}
+                <div class="list-group-item bg-dark border-secondary">
+                    <div class="d-flex justify-content-between">
+                        <strong class="text-danger">{{ rule.rule_name }}</strong>
+                        <span class="badge bg-danger">+{{ rule.score }}</span>
+                    </div>
+                    <p class="mb-0 small text-muted mt-1">{{ rule.explanation }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-success">No phishing rules triggered. Content appears safe based on current rules.</p>
+            {% endif %}
+            <h6 class="mt-3">Full Rule Report</h6>
+            <table class="table table-sm table-dark table-striped">
+                <thead><tr><th>Rule</th><th>Status</th><th>Points</th></tr></thead>
+                <tbody>
+                    {% for rule in result.all_rules %}
+                    <tr>
+                        <td>{{ rule.rule_name }}</td>
+                        <td>{% if rule.triggered %}<span class="text-danger">Triggered</span>{% else %}<span class="text-success">Clear</span>{% endif %}</td>
+                        <td>{% if rule.triggered %}+{{ rule.score }}{% else %}0{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Quiz Results{% endblock %}
+{% block content %}
+<h2>Quiz Results: {{ quiz.title }}</h2>
+<div class="alert alert-info display-4 text-center">{{ score }} / {{ total }} ({{ ((score/total)*100)|round|int }}%)</div>
+<h4 class="mt-4">Answer Review</h4>
+{% for item in review %}
+<div class="card bg-dark border-secondary mb-2">
+    <div class="card-body">
+        <p>{{ item.question.question }}</p>
+        {% if item.correct %}
+        <span class="badge bg-success">Correct</span>
+        {% else %}
+        <span class="badge bg-danger">Incorrect</span>
+        <small class="d-block text-muted">Correct: {{ item.question.correct_answer }}</small>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+<a href="{{ url_for('quiz.quiz_list') }}" class="btn btn-outline-info">Back to Quizzes</a>
+{% endblock %}

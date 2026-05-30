@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Module Form{% endblock %}
+{% block content %}
+<h2>{{ 'Edit' if module else 'Add' }} Module</h2>
+<form method="post">
+    <div class="mb-3"><label class="form-label">Title</label><input name="title" class="form-control" value="{{ module.title if module else '' }}" required></div>
+    <div class="mb-3"><label class="form-label">Description</label><input name="description" class="form-control" value="{{ module.description if module else '' }}" required></div>
+    <div class="mb-3"><label class="form-label">Order</label><input name="order_index" type="number" class="form-control" value="{{ module.order_index if module else 0 }}"></div>
+    <div class="mb-3"><label class="form-label">Content (HTML)</label><textarea name="content" class="form-control" rows="12" required>{{ module.content if module else '' }}</textarea></div>
+    <button type="submit" class="btn btn-info">Save</button>
+</form>
+{% endblock %}

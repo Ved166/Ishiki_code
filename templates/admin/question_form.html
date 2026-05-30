@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Question Form{% endblock %}
+{% block content %}
+<h2>{{ 'Edit' if question else 'Add' }} Question</h2>
+<form method="post" class="col-lg-8">
+    <div class="mb-3"><label class="form-label">Question</label><textarea name="question" class="form-control" rows="3" required>{{ question.question if question else '' }}</textarea></div>
+    <div class="mb-3"><label class="form-label">Type</label>
+        <select name="question_type" class="form-select">
+            <option value="multiple_choice">Multiple Choice</option>
+            <option value="true_false">True/False</option>
+            <option value="scenario">Scenario</option>
+        </select>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3"><label>A</label><input name="option_a" class="form-control" value="{{ question.option_a if question else '' }}"></div>
+        <div class="col-md-6 mb-3"><label>B</label><input name="option_b" class="form-control" value="{{ question.option_b if question else '' }}"></div>
+        <div class="col-md-6 mb-3"><label>C</label><input name="option_c" class="form-control" value="{{ question.option_c if question else '' }}"></div>
+        <div class="col-md-6 mb-3"><label>D</label><input name="option_d" class="form-control" value="{{ question.option_d if question else '' }}"></div>
+    </div>
+    <div class="mb-3"><label class="form-label">Correct Answer (text or letter a-d)</label><input name="correct_answer" class="form-control" value="{{ question.correct_answer if question else '' }}" required></div>
+    <button type="submit" class="btn btn-info">Save</button>
+</form>
+{% endblock %}
