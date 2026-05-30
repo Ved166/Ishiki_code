@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # ISHIKI – Rule-Based Phishing Awareness & Detection Platform
 
 ISHIKI is a cybersecurity training web application that educates users about phishing attacks and analyzes suspicious emails and URLs using a **transparent, rule-based detection engine**.
